@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, LogOut, RefreshCw, Mail, ShoppingBag, Trash2, LayoutGrid, Settings, Key, Globe, Save, BarChart3, Users, Monitor, MonitorSmartphone, MousePointer2 } from "lucide-react";
+import { Lock, LogOut, RefreshCw, Mail, ShoppingBag, Trash2, LayoutGrid, Settings, Key, Globe, Save, BarChart3, Users, Monitor, MonitorSmartphone, MousePointer2, Paperclip } from "lucide-react";
 
 interface Submission {
     id: string;
@@ -526,21 +526,63 @@ export default function AdminDashboard() {
                             {displayedSubmissions.map((sub) => (
                                 <motion.div key={sub.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-6 shadow-sm relative group">
                                     <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-                                        <div>
-                                            <h3 className="font-bold text-lg">{sub.data.name}</h3>
-                                            <a href={`mailto:${sub.data.email}`} className="text-sm text-blue-500">{sub.data.email}</a>
+                                        <div className="flex items-center gap-3">
+                                            <h3 className="font-bold text-lg text-[var(--foreground)]">{sub.data.name || sub.data.first_name || "Unknown"}</h3>
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider ${sub.form_name?.toLowerCase() === "contact" ? "bg-purple-500/10 text-purple-500" : "bg-amber-500/10 text-amber-500"}`}>
+                                                {sub.form_name?.toLowerCase() === 'contact' ? 'Message' : 'Request'}
+                                            </span>
+                                            <select
+                                                value={statuses[sub.id] || "new"}
+                                                onChange={(e) => handleStatusChange(sub.id, e.target.value)}
+                                                className={`text-[10px] font-bold px-2 py-0.5 rounded cursor-pointer appearance-none border-none outline-none pr-6 bg-transparent uppercase tracking-wider
+                                                    ${(statuses[sub.id] || "new") === "new" ? "text-blue-500 bg-blue-500/10" : ""}
+                                                    ${(statuses[sub.id]) === "in-progress" ? "text-amber-500 bg-amber-500/10" : ""}
+                                                    ${(statuses[sub.id]) === "completed" ? "text-emerald-500 bg-emerald-500/10" : ""}
+                                                    ${(statuses[sub.id]) === "archived" ? "text-slate-500 bg-slate-500/10" : ""}
+                                                `}
+                                                style={{ backgroundImage: `url('data:image/svg+xml;utf8,<svg fill="currentColor" height="12" viewBox="0 0 24 24" width="12" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>')`, backgroundRepeat: "no-repeat", backgroundPosition: "right 4px center" }}
+                                            >
+                                                <option value="new">New</option>
+                                                <option value="in-progress">In Progress</option>
+                                                <option value="completed">Completed</option>
+                                                <option value="archived">Archived</option>
+                                            </select>
                                         </div>
-                                        <div className="flex flex-col items-end gap-2">
-                                            <span className="text-xs bg-[var(--muted)] px-3 py-1 rounded-full text-[var(--muted-foreground)] font-medium">
+                                        <div className="flex items-center gap-4">
+                                            <span className="text-xs text-[var(--muted-foreground)]">
                                                 {new Date(sub.created_at).toLocaleString()}
                                             </span>
+                                            <button onClick={() => handleDeleteSubmission(sub.id)} className="text-red-500/50 hover:text-red-500 transition-colors p-2 hover:bg-red-500/10 rounded-lg">
+                                                <Trash2 size={16} />
+                                            </button>
                                         </div>
                                     </div>
+
+                                    <div>
+                                        <a href={`mailto:${sub.data.email}`} className="text-sm text-blue-500 hover:underline">{sub.data.email}</a>
+                                        {sub.data.service && (
+                                            <div className="mt-1 flex items-center justify-end w-full">
+                                                <span className="text-xs font-semibold px-3 py-1 rounded-full bg-blue-500/10 text-blue-500">
+                                                    {sub.data.service}
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
+
                                     <div className="mt-4 pt-4 border-t border-[var(--border)]">
+                                        <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wider mb-2 font-semibold">Requirements / Message</p>
                                         <p className="text-[var(--foreground)] whitespace-pre-wrap text-sm leading-relaxed">
                                             {sub.data.requirements || sub.data.message || "No message provided."}
                                         </p>
                                     </div>
+
+                                    {sub.data.attachment && (
+                                        <div className="mt-4 pt-4 border-t border-[var(--border)] flex">
+                                            <a href={sub.data.attachment} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--accent)]/10 hover:bg-[var(--accent)]/20 text-[var(--accent)] rounded-lg text-sm font-semibold transition-colors">
+                                                <Paperclip size={16} /> View Attachment
+                                            </a>
+                                        </div>
+                                    )}
                                 </motion.div>
                             ))}
                         </AnimatePresence>
