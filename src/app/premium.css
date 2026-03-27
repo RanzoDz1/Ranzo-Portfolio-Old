@@ -1,0 +1,398 @@
+/* ═══════════════════════════════════════════════════════════════════
+   PREMIUM DESIGN SYSTEM — Ranzo Portfolio
+   Luxury animations, shadows, and interaction states
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Premium Design Tokens ─────────────────────────────────────── */
+:root {
+  /* Timing — FAST & SNAPPY (0.3-0.5s range) */
+  --pm-entrance: 0.4s;
+  --pm-hover: 0.25s;
+  --pm-scroll: 0.45s;
+
+  /* Premium Easing Curves */
+  --pm-ease-entrance: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --pm-ease-hover: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --pm-ease-scroll: cubic-bezier(0.16, 1, 0.3, 1);
+  --pm-ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Multi-Layer Shadow System */
+  --pm-shadow-near: 0 2px 4px rgba(0, 0, 0, 0.06);
+  --pm-shadow-mid: 0 8px 16px rgba(0, 0, 0, 0.08);
+  --pm-shadow-far: 0 20px 40px rgba(0, 0, 0, 0.12);
+  --pm-shadow-premium: var(--pm-shadow-near), var(--pm-shadow-mid), var(--pm-shadow-far);
+
+  /* Accent glow */
+  --pm-glow-accent: 0 0 20px rgba(59, 130, 246, 0.15), 0 0 60px rgba(59, 130, 246, 0.08);
+}
+
+.dark {
+  --pm-shadow-near: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --pm-shadow-mid: 0 8px 16px rgba(0, 0, 0, 0.25);
+  --pm-shadow-far: 0 20px 40px rgba(0, 0, 0, 0.35);
+  --pm-shadow-premium: var(--pm-shadow-near), var(--pm-shadow-mid), var(--pm-shadow-far);
+  --pm-glow-accent: 0 0 20px rgba(59, 130, 246, 0.2), 0 0 60px rgba(59, 130, 246, 0.1);
+}
+
+/* ── Premium Card Hover System ─────────────────────────────────── */
+.pm-card {
+  transition:
+    transform var(--pm-hover) var(--pm-ease-smooth),
+    box-shadow var(--pm-hover) var(--pm-ease-smooth),
+    border-color var(--pm-hover) ease;
+}
+
+.pm-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--pm-shadow-premium);
+}
+
+/* ── Premium Button System ─────────────────────────────────────── */
+.pm-btn-primary {
+  position: relative;
+  transition:
+    transform 0.18s var(--pm-ease-smooth),
+    box-shadow var(--pm-hover) var(--pm-ease-smooth),
+    background-color 0.18s ease;
+}
+
+.pm-btn-primary:hover {
+  box-shadow: var(--pm-glow-accent);
+}
+
+.pm-btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* ── Premium Link Underline ────────────────────────────────────── */
+.pm-underline {
+  position: relative;
+  text-decoration: none;
+}
+
+.pm-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent);
+  transition: width var(--pm-hover) var(--pm-ease-smooth), left var(--pm-hover) var(--pm-ease-smooth);
+}
+
+.pm-underline:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* ── Premium Form Inputs ───────────────────────────────────────── */
+.pm-input {
+  transition:
+    border-color var(--pm-hover) ease,
+    box-shadow var(--pm-hover) var(--pm-ease-smooth),
+    background-color 0.2s ease;
+}
+
+.pm-input:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12), 0 2px 8px rgba(59, 130, 246, 0.08);
+}
+
+.dark .pm-input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+/* ── Scroll Progress Bar ───────────────────────────────────────── */
+.pm-scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+  transform-origin: left;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* ── Scroll To Top Button ──────────────────────────────────────── */
+.pm-scroll-top {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  cursor: pointer;
+  transition:
+    transform var(--pm-hover) var(--pm-ease-smooth),
+    box-shadow var(--pm-hover) var(--pm-ease-smooth),
+    border-color var(--pm-hover) ease;
+}
+
+.pm-scroll-top:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--pm-shadow-mid);
+  border-color: var(--accent);
+}
+
+/* ── Premium Typography ────────────────────────────────────────── */
+.pm-heading-hover {
+  transition: letter-spacing var(--pm-hover) var(--pm-ease-smooth);
+}
+
+.pm-heading-hover:hover {
+  letter-spacing: 0.02em;
+}
+
+/* ── Premium Section Divider ───────────────────────────────────── */
+.pm-divider {
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--border) 20%,
+      var(--border) 80%,
+      transparent 100%);
+}
+
+/* ── Premium Shimmer ───────────────────────────────────────────── */
+@keyframes pm-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.pm-shimmer {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: pm-shimmer 3s ease-in-out infinite;
+}
+
+/* ── Premium Floating Animation ────────────────────────────────── */
+@keyframes pm-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.pm-float {
+  animation: pm-float 6s var(--pm-ease-entrance) infinite;
+}
+
+/* ── Premium Pulse Glow ────────────────────────────────────────── */
+@keyframes pm-pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 20px 4px rgba(59, 130, 246, 0.15);
+  }
+}
+
+.pm-pulse-glow {
+  animation: pm-pulse-glow 3s ease-in-out infinite;
+}
+
+/* ── Premium Spinner ───────────────────────────────────────────── */
+@keyframes pm-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.pm-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: pm-spin 0.6s linear infinite;
+}
+
+/* ── Glassmorphism Enhanced ────────────────────────────────────── */
+.pm-glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px) saturate(1.2);
+  -webkit-backdrop-filter: blur(20px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dark .pm-glass {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* ── Star Fill Animation ───────────────────────────────────────── */
+@keyframes pm-star-fill {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PREMIUM IMAGERY SYSTEM
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Blur-Up Image Loading ─────────────────────────────────────── */
+.pm-blur-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.pm-blur-image img {
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+.pm-blur-image .img-placeholder {
+  position: absolute;
+  inset: 0;
+  filter: blur(20px);
+  transform: scale(1.05);
+  transition: opacity 0.4s ease;
+  background-size: cover;
+  background-position: center;
+}
+
+.pm-blur-image.loaded .img-placeholder {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ── Image Hover Zoom ──────────────────────────────────────────── */
+.pm-img-zoom {
+  overflow: hidden;
+}
+
+.pm-img-zoom img,
+.pm-img-zoom .next-image-wrapper {
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.pm-img-zoom:hover img,
+.pm-img-zoom:hover .next-image-wrapper {
+  transform: scale(1.05);
+}
+
+/* ── Image Overlay ─────────────────────────────────────────────── */
+.pm-img-overlay {
+  position: relative;
+}
+
+.pm-img-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* ── Border Glow on Hover ──────────────────────────────────────── */
+.pm-border-glow {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.pm-border-glow:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+/* ── CSS-Only Scroll Reveal ────────────────────────────────────── */
+.pm-reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.pm-reveal.pm-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Staggered Reveal Delays ───────────────────────────────────── */
+.pm-delay-1 {
+  transition-delay: 0.05s;
+}
+
+.pm-delay-2 {
+  transition-delay: 0.1s;
+}
+
+.pm-delay-3 {
+  transition-delay: 0.15s;
+}
+
+.pm-delay-4 {
+  transition-delay: 0.2s;
+}
+
+.pm-delay-5 {
+  transition-delay: 0.25s;
+}
+
+.pm-delay-6 {
+  transition-delay: 0.3s;
+}
+
+/* ── Hero Image Parallax Layer ─────────────────────────────────── */
+.pm-hero-bg-image {
+  position: absolute;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* ── Service Card Image ────────────────────────────────────────── */
+.pm-service-image {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  object-fit: cover;
+  mix-blend-mode: luminosity;
+  transition: opacity 0.3s ease;
+}
+
+.group:hover .pm-service-image {
+  opacity: 0.18;
+}

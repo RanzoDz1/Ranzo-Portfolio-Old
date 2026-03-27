@@ -1,0 +1,12 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Block admin and API routes from indexing
+Disallow: /admin
+Disallow: /api/
+
+# Crawl-delay for politeness
+Crawl-delay: 1
+
+Sitemap: https://ranzodz.com/sitemap.xml

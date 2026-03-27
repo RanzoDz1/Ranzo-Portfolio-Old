@@ -1,0 +1,4 @@
+Contact: mailto:contact@ranzodz.com
+Expires: 2027-03-17T00:00:00z
+Preferred-Languages: en
+Canonical: https://ranzodz.com/.well-known/security.txt
