@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Layout, Monitor, Zap, Smartphone, BarChart2, Bot, X, CheckCircle2 } from "lucide-react";
+import { Layout, Monitor, Zap, Smartphone, BarChart2, Bot, X, CheckCircle2, Paperclip } from "lucide-react";
 import { services } from "@/lib/data";
 import { smoothScrollTo } from "@/lib/smoothScroll";
 import { trackEvent } from "@/components/Analytics";
@@ -41,6 +41,18 @@ export default function Services() {
 
     const [selectedService, setSelectedService] = useState<string | null>(null);
     const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+    const [fileName, setFileName] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleFileChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        setFileName(file ? file.name : null);
+    }, []);
+
+    const clearFile = useCallback(() => {
+        setFileName(null);
+        if (fileInputRef.current) fileInputRef.current.value = "";
+    }, []);
 
     // Close modal on escape
     useEffect(() => {
@@ -58,7 +70,7 @@ export default function Services() {
         const formData = new FormData(form);
 
         // Explicitly grab the file if it exists and append it
-        const fileInput = form.querySelector('input[type="file"]') as HTMLInputElement;
+        const fileInput = fileInputRef.current;
         if (fileInput && fileInput.files && fileInput.files.length > 0) {
             const file = fileInput.files[0];
             if (file.size > 4.5 * 1024 * 1024) {
@@ -286,8 +298,37 @@ export default function Services() {
                                     </div>
 
                                     <div className="space-y-1.5">
-                                        <label htmlFor="attachment" className="text-sm font-medium text-[var(--foreground)]">Attachment <span className="text-[var(--muted-foreground)]">(Optional - PDF or Image)</span></label>
-                                        <input type="file" id="attachment" name="attachment" accept=".pdf,image/*" className="w-full px-4 py-2 border border-[var(--border)] rounded-xl bg-[var(--background)] text-sm text-[var(--muted-foreground)] file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-blue-500/10 file:text-blue-500 hover:file:bg-blue-500/20 outline-none transition-all cursor-pointer" />
+                                        <label className="text-sm font-medium text-[var(--foreground)]">Attachment <span className="text-[var(--muted-foreground)]">(Optional - PDF or Image)</span></label>
+                                        {/* Hidden native input — always English via our custom button */}
+                                        <input
+                                            ref={fileInputRef}
+                                            type="file"
+                                            id="attachment"
+                                            name="attachment"
+                                            accept=".pdf,image/*"
+                                            className="sr-only"
+                                            onChange={handleFileChange}
+                                        />
+                                        <div className="flex items-center gap-3">
+                                            <button
+                                                type="button"
+                                                onClick={() => fileInputRef.current?.click()}
+                                                className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border border-[var(--border)] bg-blue-500/10 text-blue-400 text-sm font-semibold hover:bg-blue-500/20 hover:border-blue-500/40 transition-all duration-200"
+                                            >
+                                                <Paperclip size={14} />
+                                                Choose File
+                                            </button>
+                                            {fileName ? (
+                                                <span className="flex items-center gap-2 text-sm text-[var(--foreground)] truncate max-w-[200px]">
+                                                    <span className="truncate">{fileName}</span>
+                                                    <button type="button" onClick={clearFile} className="flex-shrink-0 text-[var(--muted-foreground)] hover:text-red-400 transition-colors">
+                                                        <X size={13} />
+                                                    </button>
+                                                </span>
+                                            ) : (
+                                                <span className="text-sm text-[var(--muted-foreground)]">No file selected</span>
+                                            )}
+                                        </div>
                                     </div>
 
                                     <button
