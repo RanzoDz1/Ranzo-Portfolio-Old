@@ -11,6 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://ranzodz.com"),
   title: "Ranzo | #1 Landing Page Designer & Webflow Developer | 50% Off",
   description:
     "Expert web designer specializing in high-converting landing pages, Webflow development & B2B websites. 300+ projects delivered, 100% satisfaction. Get 50% off →",

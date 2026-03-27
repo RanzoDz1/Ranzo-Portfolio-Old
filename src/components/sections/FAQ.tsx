@@ -99,7 +99,7 @@ export default function FAQ() {
     const isInView = useInView(ref, { once: true, margin: "0px" });
 
     return (
-        <section id="faq" className="py-28 px-6 bg-[var(--muted)]" aria-label="Frequently Asked Questions">
+        <section id="faq" className="pt-28 pb-6 px-6 bg-[var(--muted)]" aria-label="Frequently Asked Questions">
             <div className="max-w-3xl mx-auto" ref={ref}>
                 {/* Header */}
                 <div className="text-center mb-14">
@@ -149,7 +149,7 @@ export default function FAQ() {
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.1, duration: 0.5 }}
-                    className="text-center mt-12"
+                    className="text-center mt-6"
                 >
                     <p className="text-sm text-[var(--muted-foreground)] mb-4">
                         Still have questions?
