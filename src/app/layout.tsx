@@ -39,6 +39,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Ranzo", url: "https://ranzodz.com" }],
   creator: "Ranzo",
   publisher: "Ranzo Web Design & Development",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/apple-touch-icon.png",
+  },
   openGraph: {
     title: "Ranzo | #1 Landing Page Designer & Webflow Developer",
     description:

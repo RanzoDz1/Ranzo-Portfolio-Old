@@ -74,7 +74,7 @@ export default function Contact() {
     };
 
     return (
-        <section id="contact" className="py-28 px-6 bg-[var(--muted)]">
+        <section id="contact" className="pt-12 pb-28 px-6 bg-[var(--muted)]">
             <div className="max-w-2xl mx-auto text-center" ref={ref}>
                 {/* Header */}
                 <motion.p
