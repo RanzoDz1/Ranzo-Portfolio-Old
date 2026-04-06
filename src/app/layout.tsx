@@ -4,6 +4,8 @@ import "./globals.css";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Analytics from "@/components/Analytics";
 import Tracker from "@/components/Tracker";
+import dynamic from "next/dynamic";
+const CustomCursor = dynamic(() => import("@/components/CustomCursor"), { ssr: false });
 
 const inter = Inter({
   subsets: ["latin"],
@@ -400,6 +402,7 @@ export default function RootLayout({
         <ThemeProvider>{children}</ThemeProvider>
         <Analytics />
         <Tracker />
+        <CustomCursor />
       </body>
     </html>
   );
