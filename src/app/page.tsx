@@ -1,3 +1,4 @@
+import ClientBootstrap from "@/components/ClientBootstrap";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
@@ -18,6 +19,7 @@ export default function Home() {
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
+      <ClientBootstrap />
       <ScrollProgress />
       <main id="main-content" className="min-h-screen bg-[var(--background)]">
         <Navbar />

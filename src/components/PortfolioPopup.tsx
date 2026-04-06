@@ -118,15 +118,26 @@ export default function PortfolioPopup({ project, onClose }: PortfolioPopupProps
         return () => window.removeEventListener("keydown", onKey);
     }, [onClose]);
 
-    // Lock body scroll when open
+    // Lock body scroll when open; register with global modal tracker
     useEffect(() => {
-        if (project) {
-            document.body.style.overflow = "hidden";
-        } else {
+        document.body.style.overflow = project ? "hidden" : "";
+        const w = window as any;
+        if (!w.__ranzodz_modals) w.__ranzodz_modals = new Set<string>();
+        if (project) w.__ranzodz_modals.add("portfolio");
+        else         w.__ranzodz_modals.delete("portfolio");
+        return () => {
             document.body.style.overflow = "";
-        }
-        return () => { document.body.style.overflow = ""; };
+            w.__ranzodz_modals?.delete("portfolio");
+        };
     }, [project]);
+
+    // Mobile back button closes the popup
+    useEffect(() => {
+        if (!project) return;
+        const handler = () => onClose();
+        window.addEventListener("ranzodz:close-modal", handler);
+        return () => window.removeEventListener("ranzodz:close-modal", handler);
+    }, [project, onClose]);
 
     return (
         <AnimatePresence>

@@ -1,7 +1,7 @@
 "use client"; // Deployment trigger
 
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Moon, Sun, Menu, X, Sparkles } from "lucide-react";
 import { useTheme } from "@/context/ThemeContext";
@@ -17,13 +17,19 @@ const navLinks = [
 
 export default function Navbar() {
     const { theme, toggleTheme } = useTheme();
-    const [scrolled, setScrolled] = useState(false);
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [scrolled, setScrolled]       = useState(false);
+    const [hidden, setHidden]           = useState(false);
+    const [menuOpen, setMenuOpen]       = useState(false);
     const [activeSection, setActiveSection] = useState("");
+    const lastY = useRef(0);
 
     useEffect(() => {
         const onScroll = () => {
-            setScrolled(window.scrollY > 40);
+            const y = window.scrollY;
+            setScrolled(y > 40);
+            // Hide navbar when scrolling DOWN past 100px; show when scrolling UP
+            setHidden(y > 100 && y > lastY.current);
+            lastY.current = y;
 
             // Determine active section
             const sections = navLinks.map(l => l.href.replace("#", ""));
@@ -72,8 +78,8 @@ export default function Navbar() {
 
             <motion.nav
                 initial={{ y: -100, opacity: 0 }}
-                animate={{ y: scrolled ? -36 : 0, opacity: 1 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1], delay: 0.05, y: { duration: 0.2, ease: "easeInOut" } }}
+                animate={{ y: hidden ? -120 : scrolled ? -36 : 0, opacity: 1 }}
+                transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className={`fixed top-[36px] sm:top-[36px] left-0 right-0 z-50 transition-all duration-300 ${scrolled
                     ? "py-3 bg-[var(--background)]/80 backdrop-blur-xl border-b border-[var(--border)] shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
                     : "py-5"
