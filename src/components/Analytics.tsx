@@ -1,14 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Script from "next/script";
 
-// Replace G-XXXXXXXXXX with your real GA4 Measurement ID from:
-// https://analytics.google.com > Admin > Data Streams > Web > Measurement ID
 const GA_ID = "G-RYS7QE704Y";
 
 export default function Analytics() {
-    const isPlaceholder = GA_ID.includes("XXX");
-    if (!GA_ID || isPlaceholder) return null;
+    const [consented, setConsented] = useState(false);
+
+    useEffect(() => {
+        const check = () => {
+            const consent = localStorage.getItem("cookie-consent");
+            setConsented(consent === "accepted");
+        };
+        check();
+        window.addEventListener("cookie-consent-updated", check);
+        return () => window.removeEventListener("cookie-consent-updated", check);
+    }, []);
+
+    if (!GA_ID || GA_ID.includes("XXX") || !consented) return null;
 
     return (
         <>
@@ -23,7 +33,8 @@ export default function Analytics() {
           gtag('js', new Date());
           gtag('config', '${GA_ID}', {
             page_path: window.location.pathname,
-            send_page_view: true
+            send_page_view: true,
+            anonymize_ip: true
           });
         `}
             </Script>

@@ -11,6 +11,11 @@ const footerLinks = [
     { href: "#contact", label: "Contact" },
 ];
 
+const legalLinks = [
+    { href: "/privacy-policy", label: "Privacy Policy" },
+    { href: "/terms", label: "Terms" },
+];
+
 export default function Footer() {
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault();
@@ -50,6 +55,19 @@ export default function Footer() {
                     <p className="text-xs text-[var(--muted-foreground)] text-center">
                         © {new Date().getFullYear()} Ranzo. All rights reserved.
                     </p>
+                </div>
+
+                {/* Legal links */}
+                <div className="mt-6 pt-4 border-t border-[var(--border)] flex flex-wrap justify-center gap-4">
+                    {legalLinks.map((link) => (
+                        <a
+                            key={link.href}
+                            href={link.href}
+                            className="text-xs text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors duration-200"
+                        >
+                            {link.label}
+                        </a>
+                    ))}
                 </div>
             </div>
         </footer>

@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import Analytics from "@/components/Analytics";
 import Tracker from "@/components/Tracker";
 import CursorWrapper from "@/components/CursorWrapper";
+import CookieBanner from "@/components/CookieBanner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -402,6 +403,7 @@ export default function RootLayout({
         <Analytics />
         <Tracker />
         <CursorWrapper />
+        <CookieBanner />
       </body>
     </html>
   );

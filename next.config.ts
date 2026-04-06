@@ -32,9 +32,10 @@ const securityHeaders = [
       "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
-      // Allow data URIs (blur placeholders), blob URIs, and Unsplash images
-      "img-src 'self' data: blob: https://www.google-analytics.com https://images.unsplash.com https://plus.unsplash.com",
+      "img-src 'self' data: blob: https://www.google-analytics.com https://images.unsplash.com https://plus.unsplash.com https://lh3.googleusercontent.com https://res.cloudinary.com",
       "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://vitals.vercel-insights.com https://images.unsplash.com https://formsubmit.co",
+      "media-src 'self' blob: data:",
+      "worker-src 'self' blob:",
       "frame-ancestors 'self'",
       "base-uri 'self'",
       "form-action 'self' https://formsubmit.co",
