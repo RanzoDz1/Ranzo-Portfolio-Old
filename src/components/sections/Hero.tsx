@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, Sparkles, BarChart3, CheckCircle2, Code2 } from "lucide-react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { Sparkles, BarChart3, CheckCircle2, Code2 } from "lucide-react";
 import { smoothScrollTo } from "@/lib/smoothScroll";
 import { trackEvent } from "@/components/Analytics";
 import { pmEase } from "@/lib/animations";
@@ -13,6 +13,7 @@ const HERO_BG_URL =
 
 export default function Hero() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const glowRef = useRef<HTMLDivElement>(null);
     const [isMobile, setIsMobile] = useState(false);
     const [bgLoaded, setBgLoaded] = useState(false);
     const [heroTitle, setHeroTitle] = useState("Your Website.");
@@ -41,15 +42,32 @@ export default function Hero() {
         img.onload = () => setBgLoaded(true);
     }, [isMobile]);
 
+    // Mouse follow glow — direct DOM, no re-renders
+    useEffect(() => {
+        const el = glowRef.current;
+        if (!el || isMobile) return;
+        const move = (e: MouseEvent) => {
+            el.style.left = `${e.clientX}px`;
+            el.style.top = `${e.clientY}px`;
+        };
+        window.addEventListener("mousemove", move, { passive: true });
+        return () => window.removeEventListener("mousemove", move);
+    }, [isMobile]);
+
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end start"],
     });
 
-    // Simple transforms — no spring, no blur, no scale
-    const y1      = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-    const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-    const bgY     = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+    // Spring smoothing — same as RanzoBlog for that buttery scroll feel
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25 });
+
+    const y1           = useTransform(smoothProgress, [0, 1], ["0%", "15%"]);
+    const opacity      = useTransform(smoothProgress, [0, 0.5], [1, 0]);
+    const bgY          = useTransform(smoothProgress, [0, 1], ["0%", "-10%"]);
+    const bgScale      = useTransform(smoothProgress, [0, 1], [1.0, 1.08]);
+    const sidesOpacity = useTransform(smoothProgress, [0, 0.4], [1, 0]);
+    const scrollIndOp  = useTransform(smoothProgress, [0, 0.3], [1, 0]);
 
     return (
         <section
@@ -64,9 +82,22 @@ export default function Hero() {
                 {/* Static vignette */}
                 <div className="absolute inset-0 z-20 pointer-events-none bg-gradient-to-b from-black/50 via-transparent to-black/50" />
 
-                {/* Background — parallax only on desktop */}
+                {/* Mouse glow — desktop only, direct DOM */}
+                {!isMobile && (
+                    <div
+                        ref={glowRef}
+                        className="absolute w-[500px] h-[500px] rounded-full pointer-events-none z-[3]"
+                        style={{
+                            transform: "translate(-50%, -50%)",
+                            background: "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)",
+                            filter: "blur(40px)",
+                        }}
+                    />
+                )}
+
+                {/* Background — parallax + scale on desktop */}
                 <motion.div
-                    style={isMobile ? {} : { y: bgY }}
+                    style={isMobile ? {} : { y: bgY, scale: bgScale }}
                     className="absolute inset-[-5%] w-[110%] h-[110%] pointer-events-none"
                 >
                     {!isMobile && (
@@ -103,7 +134,7 @@ export default function Hero() {
 
                 {/* Floating decoration cards — desktop only, appear once, no infinite loop */}
                 {!isMobile && (
-                    <motion.div style={{ y: y1, opacity }} className="absolute inset-0 pointer-events-none overflow-hidden">
+                    <motion.div style={{ y: y1, opacity: sidesOpacity }} className="absolute inset-0 pointer-events-none overflow-hidden">
                         <motion.div
                             initial={{ opacity: 0, x: -30 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -244,16 +275,24 @@ export default function Hero() {
                     </div>
                 </motion.div>
 
-                {/* Scroll indicator */}
+                {/* Scroll indicator — animated line, same as RanzoBlog */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.8, duration: 0.4 }}
-                    style={{ opacity }}
-                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-gray-500 pointer-events-none"
+                    style={{ opacity: scrollIndOp }}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 pointer-events-none flex flex-col items-center gap-3"
                 >
-                    <span className="text-[10px] tracking-widest uppercase font-semibold">Scroll</span>
-                    <ArrowDown size={14} className="animate-bounce" />
+                    <span className="text-[9px] tracking-[3px] uppercase font-semibold text-gray-500">Scroll</span>
+                    <div className="w-px h-14 overflow-hidden" style={{ background: "rgba(255,255,255,0.1)" }}>
+                        <div
+                            className="w-full h-full"
+                            style={{
+                                background: "linear-gradient(to bottom, #3b82f6, #8b5cf6)",
+                                animation: "scroll-line 2.5s ease-in-out infinite",
+                            }}
+                        />
+                    </div>
                 </motion.div>
             </div>
         </section>
