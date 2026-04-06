@@ -47,7 +47,7 @@ function ProjectCard({
             onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") onOpen(project); }}
         >
             {/* Gradient header */}
-            <div className={`relative h-40 bg-gradient-to-br ${project.gradient} overflow-hidden flex items-center justify-center`}>
+            <div className={`relative h-28 sm:h-40 bg-gradient-to-br ${project.gradient} overflow-hidden flex items-center justify-center`}>
                 {/* Animated orb */}
                 <motion.div
                     className="absolute w-28 h-28 rounded-full opacity-25 blur-2xl bg-white"
@@ -72,24 +72,24 @@ function ProjectCard({
                 </div>
 
                 {/* Project title */}
-                <div className="relative z-10 text-center px-5">
-                    <p className="text-[11px] font-semibold text-white/70 uppercase tracking-widest mb-1">
+                <div className="relative z-10 text-center px-3 sm:px-5">
+                    <p className="text-[9px] sm:text-[11px] font-semibold text-white/70 uppercase tracking-widest mb-1">
                         {project.industry}
                     </p>
-                    <h3 className="text-xl font-bold text-white leading-tight drop-shadow">
+                    <h3 className="text-sm sm:text-xl font-bold text-white leading-tight drop-shadow">
                         {project.title}
                     </h3>
                 </div>
             </div>
 
             {/* Body */}
-            <div className="flex flex-col flex-1 p-5 gap-4">
-                <p className="text-sm text-[var(--muted-foreground)] leading-relaxed min-h-[4.5rem]">
+            <div className="flex flex-col flex-1 p-3 sm:p-5 gap-2 sm:gap-4">
+                <p className="text-[11px] sm:text-sm text-[var(--muted-foreground)] leading-relaxed min-h-[3rem] sm:min-h-[4.5rem]">
                     {project.description}
                 </p>
 
                 {/* Feature list */}
-                <ul className="space-y-1.5 flex-1">
+                <ul className="hidden sm:block space-y-1.5 flex-1">
                     {project.features.map((f) => (
                         <li key={f} className="flex items-start gap-2 text-xs text-[var(--muted-foreground)]">
                             <span
@@ -102,12 +102,12 @@ function ProjectCard({
                 </ul>
 
                 {/* Tags + CTA */}
-                <div className="mt-auto pt-3 border-t border-[var(--border)] flex items-center justify-between gap-2">
-                    <div className="flex flex-wrap gap-2">
+                <div className="mt-auto pt-2 sm:pt-3 border-t border-[var(--border)] flex items-center justify-between gap-2">
+                    <div className="flex flex-wrap gap-1 sm:gap-2">
                         {project.tags.map((tag) => (
                             <span
                                 key={tag}
-                                className="text-xs px-2.5 py-1 rounded-full font-medium"
+                                className="text-[10px] sm:text-xs px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full font-medium"
                                 style={{
                                     backgroundColor: `${project.accentColor}12`,
                                     color: project.accentColor,
@@ -199,7 +199,7 @@ export default function Projects() {
                 </div>
 
                 {/* Grid */}
-                <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <motion.div layout className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                     <AnimatePresence mode="popLayout">
                         {filtered.map((project, i) => (
                             <motion.div

@@ -164,7 +164,7 @@ export default function Services() {
                 </div>
 
                 {/* 6-service grid */}
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
                     {services.map((service, i) => {
                         const accent = accentClasses[i % accentClasses.length];
                         return (
@@ -174,7 +174,7 @@ export default function Services() {
                                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                                 transition={{ duration: 0.4, delay: 0.04 + i * 0.06, ease: pmEase.entrance }}
                                 whileHover={{ y: -4, transition: { duration: 0.25, ease: pmEase.smooth } }}
-                                className="group relative p-7 rounded-2xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/30 transition-all duration-200 hover:shadow-[var(--pm-shadow-premium)] overflow-hidden cursor-pointer flex flex-col"
+                                className="group relative p-4 sm:p-7 rounded-2xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/30 transition-all duration-200 hover:shadow-[var(--pm-shadow-premium)] overflow-hidden cursor-pointer flex flex-col"
                             >
                                 {/* Corner glow */}
                                 <div
@@ -198,19 +198,19 @@ export default function Services() {
                                 )}
 
                                 {/* Icon */}
-                                <div className={`relative z-10 w-11 h-11 rounded-xl ${accent.bg} border ${accent.border} flex items-center justify-center ${accent.text} mb-5 ${accent.hover} transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
+                                <div className={`relative z-10 w-9 h-9 sm:w-11 sm:h-11 rounded-xl ${accent.bg} border ${accent.border} flex items-center justify-center ${accent.text} mb-3 sm:mb-5 ${accent.hover} transition-all duration-300 group-hover:scale-110 group-hover:rotate-3`}>
                                     {iconMap[service.icon]}
                                 </div>
 
-                                <h3 className="relative z-10 text-lg font-bold text-[var(--foreground)] mb-2">
+                                <h3 className="relative z-10 text-sm sm:text-lg font-bold text-[var(--foreground)] mb-1 sm:mb-2">
                                     {service.title}
                                 </h3>
-                                <p className="relative z-10 text-sm text-[var(--muted-foreground)] leading-relaxed mb-5">
+                                <p className="relative z-10 text-[11px] sm:text-sm text-[var(--muted-foreground)] leading-relaxed mb-3 sm:mb-5">
                                     {service.description}
                                 </p>
 
-                                {/* Highlights */}
-                                <div className="relative z-10 flex flex-wrap gap-2">
+                                {/* Highlights — hidden on mobile */}
+                                <div className="relative z-10 hidden sm:flex flex-wrap gap-2">
                                     {service.highlights.map((h) => (
                                         <span
                                             key={h}
@@ -220,14 +220,14 @@ export default function Services() {
                                         </span>
                                     ))}
                                 </div>
-                                <div className="relative z-10 mt-auto pt-6 w-full">
+                                <div className="relative z-10 mt-auto pt-3 sm:pt-6 w-full">
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation();
                                             setSelectedService(service.title);
                                             trackEvent("service_request_open", { service_title: service.title });
                                         }}
-                                        className={`w-full py-2.5 rounded-xl border border-[var(--border)] text-sm font-semibold transition-all duration-200 ${accent.text} bg-transparent hover:bg-blue-500/10 hover:border-blue-500/40 hover:text-white cursor-pointer`}
+                                        className={`w-full py-2 sm:py-2.5 rounded-xl border border-[var(--border)] text-xs sm:text-sm font-semibold transition-all duration-200 ${accent.text} bg-transparent hover:bg-blue-500/10 hover:border-blue-500/40 hover:text-white cursor-pointer`}
                                     >
                                         Request Now
                                     </button>
