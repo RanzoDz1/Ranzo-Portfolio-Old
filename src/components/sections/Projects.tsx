@@ -196,21 +196,26 @@ export default function Projects() {
                 {/* Grid */}
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
                     <AnimatePresence mode="sync">
-                        {filtered.map((project, i) => (
-                            <motion.div
-                                key={project.id}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                            >
-                                <ProjectCard
-                                    project={project}
-                                    index={i}
-                                    onOpen={setSelectedProject}
-                                />
-                            </motion.div>
-                        ))}
+                        {filtered.map((project, i) => {
+                            // Span full width on mobile when last item is alone (odd total)
+                            const isLastAlone = i === filtered.length - 1 && filtered.length % 2 !== 0;
+                            return (
+                                <motion.div
+                                    key={project.id}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className={isLastAlone ? "col-span-2 lg:col-span-1" : ""}
+                                >
+                                    <ProjectCard
+                                        project={project}
+                                        index={i}
+                                        onOpen={setSelectedProject}
+                                    />
+                                </motion.div>
+                            );
+                        })}
                     </AnimatePresence>
                 </div>
 
