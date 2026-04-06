@@ -131,7 +131,7 @@ export default function Services() {
     return (
         <section id="services" className="py-28 px-6 bg-[var(--background)] relative overflow-hidden">
             {/* Background glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-64 bg-blue-500/5 blur-3xl rounded-full pointer-events-none" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-48 bg-blue-500/5 blur-2xl rounded-full pointer-events-none" />
 
             <div className="max-w-6xl mx-auto" ref={ref}>
                 {/* Header */}
@@ -173,8 +173,7 @@ export default function Services() {
                                 initial={{ opacity: 0, y: 32 }}
                                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                                 transition={{ duration: 0.4, delay: 0.04 + i * 0.06, ease: pmEase.entrance }}
-                                whileHover={{ y: -4, transition: { duration: 0.25, ease: pmEase.smooth } }}
-                                className="group relative p-4 sm:p-7 rounded-2xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/30 transition-all duration-200 hover:shadow-[var(--pm-shadow-premium)] overflow-hidden cursor-pointer flex flex-col"
+                                className="group relative p-4 sm:p-7 rounded-2xl border border-[var(--border)] bg-[var(--card)] hover:border-blue-500/30 transition-all duration-200 hover:-translate-y-1 hover:shadow-[var(--pm-shadow-premium)] overflow-hidden cursor-pointer flex flex-col"
                             >
                                 {/* Corner glow */}
                                 <div
@@ -189,7 +188,7 @@ export default function Services() {
                                             src={serviceImages[service.icon]}
                                             alt=""
                                             fill
-                                            className="object-cover opacity-25 group-hover:opacity-40 group-hover:scale-105 transition-all duration-500 will-change-transform"
+                                            className="object-cover opacity-20 group-hover:opacity-35 transition-opacity duration-300"
                                             sizes="400px"
                                             loading="lazy"
                                         />

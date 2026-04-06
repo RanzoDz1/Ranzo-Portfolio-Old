@@ -35,11 +35,10 @@ function ProjectCard({
     return (
         <motion.div
             ref={ref}
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.55, delay: index * 0.08, ease: pmEase.entrance }}
-            whileHover={{ y: -6, transition: { duration: 0.3, ease: pmEase.smooth } }}
-            className="group relative flex flex-col h-full rounded-2xl border border-[var(--border)] bg-[var(--card)] overflow-hidden transition-all duration-300 hover:shadow-[var(--pm-shadow-premium)] cursor-pointer"
+            transition={{ duration: 0.4, delay: index * 0.05, ease: pmEase.entrance }}
+            className="group relative flex flex-col h-full rounded-2xl border border-[var(--border)] bg-[var(--card)] overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[var(--pm-shadow-premium)] cursor-pointer"
             onClick={() => onOpen(project)}
             role="button"
             tabIndex={0}
@@ -48,12 +47,8 @@ function ProjectCard({
         >
             {/* Gradient header */}
             <div className={`relative h-28 sm:h-40 bg-gradient-to-br ${project.gradient} overflow-hidden flex items-center justify-center`}>
-                {/* Animated orb */}
-                <motion.div
-                    className="absolute w-28 h-28 rounded-full opacity-25 blur-2xl bg-white"
-                    animate={{ scale: [1, 1.4, 1], x: [0, 18, 0], y: [0, -10, 0] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                />
+                {/* Static orb — no animation */}
+                <div className="absolute w-28 h-28 rounded-full opacity-20 blur-2xl bg-white pointer-events-none" />
 
                 {/* Type badge */}
                 <span className="absolute top-3 left-3 text-xs font-bold text-white/90 bg-black/25 backdrop-blur-sm px-2.5 py-1 rounded-full">
@@ -199,14 +194,15 @@ export default function Projects() {
                 </div>
 
                 {/* Grid */}
-                <motion.div layout className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-                    <AnimatePresence mode="popLayout">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+                    <AnimatePresence mode="sync">
                         {filtered.map((project, i) => (
                             <motion.div
                                 key={project.id}
-                                layout
-                                exit={{ opacity: 0, scale: 0.92 }}
-                                transition={{ duration: 0.3 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
                             >
                                 <ProjectCard
                                     project={project}
@@ -216,7 +212,7 @@ export default function Projects() {
                             </motion.div>
                         ))}
                     </AnimatePresence>
-                </motion.div>
+                </div>
 
                 {/* Bottom CTA */}
                 <motion.div

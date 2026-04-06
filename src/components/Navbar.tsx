@@ -24,24 +24,25 @@ export default function Navbar() {
     const lastY = useRef(0);
 
     useEffect(() => {
+        let ticking = false;
         const onScroll = () => {
-            const y = window.scrollY;
-            setScrolled(y > 40);
-            // Hide navbar when scrolling DOWN past 100px; show when scrolling UP
-            setHidden(y > 100 && y > lastY.current);
-            lastY.current = y;
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                const y = window.scrollY;
+                setScrolled(y > 40);
+                setHidden(y > 100 && y > lastY.current);
+                lastY.current = y;
 
-            // Determine active section
-            const sections = navLinks.map(l => l.href.replace("#", ""));
-            let current = "";
-            for (const id of sections) {
-                const el = document.getElementById(id);
-                if (el) {
-                    const rect = el.getBoundingClientRect();
-                    if (rect.top <= 150) current = id;
+                // Active section detection — throttled via rAF
+                let current = "";
+                for (const { href } of navLinks) {
+                    const el = document.getElementById(href.replace("#", ""));
+                    if (el && el.getBoundingClientRect().top <= 150) current = href.replace("#", "");
                 }
-            }
-            setActiveSection(current);
+                setActiveSection(current);
+                ticking = false;
+            });
         };
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
@@ -61,7 +62,7 @@ export default function Navbar() {
                 initial={{ y: -50, opacity: 0 }}
                 animate={{ y: scrolled ? -50 : 0, opacity: scrolled ? 0 : 1 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
-                className="fixed top-0 left-0 right-0 z-[60] bg-[var(--card)]/90 backdrop-blur-md border-b border-[var(--border)] text-[var(--foreground)] text-xs sm:text-sm font-medium py-2.5 px-4 text-center flex items-center justify-center gap-2 sm:gap-3 shadow-sm"
+                className="fixed top-0 left-0 right-0 z-[60] bg-[var(--card)]/98 border-b border-[var(--border)] text-[var(--foreground)] text-xs sm:text-sm font-medium py-2.5 px-4 text-center flex items-center justify-center gap-2 sm:gap-3 shadow-sm"
             >
                 <Sparkles size={14} className="text-[var(--accent)] hidden sm:block" />
                 <span>
@@ -81,7 +82,7 @@ export default function Navbar() {
                 animate={{ y: hidden ? -120 : scrolled ? -36 : 0, opacity: 1 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 className={`fixed top-[36px] sm:top-[36px] left-0 right-0 z-50 transition-all duration-300 ${scrolled
-                    ? "py-3 bg-[var(--background)]/80 backdrop-blur-xl border-b border-[var(--border)] shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
+                    ? "py-3 bg-[var(--background)]/95 border-b border-[var(--border)] shadow-[0_1px_3px_rgba(0,0,0,0.05)]"
                     : "py-5"
                     }`}
             >
@@ -172,7 +173,7 @@ export default function Navbar() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                        className="fixed inset-x-0 top-[60px] z-40 bg-[var(--background)]/95 backdrop-blur-xl border-b border-[var(--border)] md:hidden"
+                        className="fixed inset-x-0 top-[60px] z-40 bg-[var(--background)]/98 border-b border-[var(--border)] md:hidden"
                     >
                         <ul className="flex flex-col px-6 py-6 gap-5">
                             {navLinks.map((link, i) => (

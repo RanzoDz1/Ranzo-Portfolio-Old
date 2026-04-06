@@ -31,17 +31,9 @@ export default function CTA() {
                 {/* Brand-color gradient overlay */}
                 <div className="absolute inset-0 bg-gradient-to-b from-[var(--background)]/80 via-[var(--background)]/60 to-[var(--background)]/80" />
 
-                {/* Ambient color blobs (on top of photo) */}
-                <motion.div
-                    className="absolute top-1/2 left-1/4 w-80 h-80 rounded-full bg-blue-500/10 blur-3xl"
-                    animate={{ scale: [1, 1.12, 1], x: [0, 20, 0], y: [0, -12, 0] }}
-                    transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                />
-                <motion.div
-                    className="absolute top-1/3 right-1/4 w-96 h-96 rounded-full bg-violet-500/10 blur-3xl"
-                    animate={{ scale: [1, 1.08, 1], x: [0, -18, 0], y: [0, 12, 0] }}
-                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                />
+                {/* Static ambient blobs — no animation */}
+                <div className="absolute top-1/2 left-1/4 w-72 h-72 rounded-full bg-blue-500/8 blur-2xl pointer-events-none" />
+                <div className="absolute top-1/3 right-1/4 w-80 h-80 rounded-full bg-violet-500/8 blur-2xl pointer-events-none" />
             </div>
 
             <div className="max-w-3xl mx-auto text-center relative z-10" ref={ref}>
